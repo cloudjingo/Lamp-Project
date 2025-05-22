@@ -1,0 +1,25 @@
+---
+- name: Configure Amazon Linux 2 as a web server
+  hosts: centos
+  become: true
+  gather_facts: false   # Skip fact gathering to avoid package manager detection errors
+
+  tasks:
+    - name: Ensure Python 3.8 is available
+      raw: test -x /usr/bin/python3.8 || sudo yum install -y python38
+      changed_when: false
+
+    - name: Set Python 3.8 as the interpreter
+      set_fact:
+        ansible_python_interpreter: /usr/bin/python3.8
+
+    - name: Install Apache (httpd) using raw yum command
+      raw: sudo yum install -y httpd
+      changed_when: true
+
+    - name: Start and enable Apache
+      raw: sudo systemctl enable --now httpd
+
+    - name: Create a simple HTML page
+      raw: echo "<h1>Hello from Amazon Linux Web Server</h1>" | sudo tee /var/www/html/index.html
+

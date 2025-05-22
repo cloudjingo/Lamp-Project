@@ -1,0 +1,43 @@
+---
+- name: Launch EC2 instances on AWS
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Launch Ubuntu EC2 instance
+      amazon.aws.ec2_instance:
+        name: "UbuntuServer"
+        key_name: "Bolaji-keypair"
+        instance_type: t2.micro
+        image_id: ami-0f890494e52693975
+        region: us-east-1
+        security_group: sg-008c188a6a9e3fd1b
+        subnet_id: subnet-048310db7e2b47b07
+        wait: yes
+        count: 1
+        network:
+          assign_public_ip: true
+
+    - name: Launch CentOS EC2 instance
+      amazon.aws.ec2_instance:
+        name: "CentOSServer"
+        key_name: "Bolaji-keypair"
+        instance_type: t2.micro
+        image_id: ami-0c02fb55956c7d316
+        region: us-east-1
+        security_group: sg-008c188a6a9e3fd1b
+        subnet_id: subnet-048310db7e2b47b07
+        wait: yes
+        count: 1
+        network:
+          assign_public_ip: true
+
+
+
+
+
+
+
+
+

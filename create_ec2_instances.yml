@@ -1,0 +1,50 @@
+---
+- name: Launch Windows and Amazon Linux EC2 instances
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    key_name: Bolaji-keypair
+    region: us-east-1
+    instance_type: t2.micro
+    ami_linux: ami-0c02fb55956c7d316   # Amazon Linux 2 AMI (us-east-1)
+    ami_windows: ami-0b2f6494ff0b07a0e # Windows Server 2019 Base (us-east-1)
+    security_group: default
+
+  tasks:
+    - name: Launch Windows Server
+      amazon.aws.ec2_instance:
+        name: windows-server
+        key_name: "{{ key_name }}"
+        instance_type: "{{ instance_type }}"
+        region: "{{ region }}"
+        image_id: "{{ ami_windows }}"
+        wait: yes
+        count: 1
+        state: running
+        tags:
+          Project: BolajiWeek1
+        security_group: "{{ security_group }}"
+      register: windows_result
+
+    - name: Launch 2 Amazon Linux servers
+      amazon.aws.ec2_instance:
+        name: linux-server
+        key_name: "{{ key_name }}"
+        instance_type: "{{ instance_type }}"
+        region: "{{ region }}"
+        image_id: "{{ ami_linux }}"
+        wait: yes
+        count: 2
+        state: running
+        tags:
+          Project: BolajiWeek1
+        security_group: "{{ security_group }}"
+      register: linux_result
+
+    - name: Show launched instances
+      debug:
+        msg:
+          - "Windows public IP: {{ windows_result.instances[0].public_ip_address }}"
+          - "Linux public IPs: {{ linux_result.instances[0].public_ip_address }}, {{ linux_result.instances[1].public_ip_address }}"
