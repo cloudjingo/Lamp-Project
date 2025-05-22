@@ -1,14 +1,21 @@
-# LAMP Project with Ansible on AWS
+# 🚀 LAMP Project with Ansible on AWS
 
 ## 📌 Project Overview
 
-This project provisions and configures a simple LAMP (Linux, Apache, MySQL, PHP) stack across AWS EC2 instances using Ansible. It automates user creation, server setup, software installation, and optionally includes cleanup and security tasks.
+This project provisions and configures a LAMP (Linux, Apache, MySQL, PHP) stack across AWS EC2 instances using Ansible. It automates:
+
+* User creation
+* EC2 instance provisioning
+* Server configuration
+* Software installation
+* Firewall and optional SSL setup
+* Cleanup of AWS resources
 
 ---
 
-## 🗂️ Directory Structure
+## 🗂️ Project Structure
 
-```
+```bash
 ansible-aws-project/
 ├── ansible.cfg
 ├── inventory.ini
@@ -34,16 +41,23 @@ ansible-aws-project/
 
 ## ⚙️ Prerequisites
 
-* AWS CLI configured
-* Ansible and Python 3.8+ installed
-* SSH keypair and access to EC2
-* Git
+* ✅ AWS CLI configured with credentials
+* ✅ Ansible & Python 3.8+ installed
+* ✅ SSH key pair with access to EC2
+* ✅ Git installed on your local system
 
 ---
 
-## 🚀 Provision EC2 Instances
+## 🌩️ Provision EC2 Instances
 
-Edit `create_ec2_instances.yml` with your AMIs and keypair.
+Update `create_ec2_instances.yml` with:
+
+* AMI IDs
+* Instance types
+* Region and key names
+* Security group settings
+
+Then run:
 
 ```bash
 ansible-playbook create_ec2_instances.yml
@@ -51,11 +65,11 @@ ansible-playbook create_ec2_instances.yml
 
 ---
 
-## 🔌 Update Inventory File
+## 📝 Update Inventory
 
-Edit `inventory.ini` with the public IPs of your EC2 instances.
+Update `inventory.ini` with the EC2 public IPs:
 
-```
+```ini
 [web]
 3.88.216.51 ansible_user=ec2-user ansible_ssh_private_key_file=~/.ssh/Bolaji-keypair.pem
 
@@ -65,15 +79,15 @@ Edit `inventory.ini` with the public IPs of your EC2 instances.
 
 ---
 
-## 🛠️ Run Playbooks
+## ⚙️ Configure Servers
 
-### Configure Web Server:
+### 🧩 Web Server Setup (Apache):
 
 ```bash
 ansible-playbook -i inventory.ini configure-amazon-web.yml
 ```
 
-### Configure DB Server:
+### 🗃️ DB Server Setup (MySQL):
 
 ```bash
 ansible-playbook -i inventory.ini configure-ubuntu-db.yml
@@ -81,26 +95,31 @@ ansible-playbook -i inventory.ini configure-ubuntu-db.yml
 
 ---
 
-## ✅ Verification Steps
+## ✅ Verification Checklist
 
-### Web Server:
+### 🌐 Web Server:
 
-* Visit: http\://<web-server-public-ip>
-* Should show Apache welcome page or app index
+* Visit: `http://<web-server-ip>`
+* Apache welcome page should load
 
-### DB Server:
+### 🛢️ DB Server:
+
+SSH into the server:
 
 ```bash
+ssh -i ~/.ssh/Bolaji-keypair.pem ubuntu@<db-server-ip>
 sudo systemctl status mysql
 ```
 
-* Service should be `active (running)`
+* MySQL service should be `active (running)`
 
 ---
 
-## 🔐 Extra Tasks
+## 🔐 Additional Security Tasks
 
-### Enable UFW on Ubuntu DB Server:
+### 🔥 Enable UFW on DB Server:
+
+Add to your DB playbook:
 
 ```yaml
 - name: Enable UFW
@@ -109,16 +128,21 @@ sudo systemctl status mysql
     policy: allow
 ```
 
-### Open Port 80 for HTTP on Web Server:
+### 🔓 Open AWS Security Group Ports:
 
-Ensure AWS security group allows port 80 (HTTP) and 22 (SSH)
+Ensure the following ports are open:
+
+* 22 (SSH)
+* 80 (HTTP)
+* 3306 (MySQL – allow only internal)
 
 ---
 
-## 🧹 Cleanup Playbook
+## 🧼 Cleanup Playbook
+
+To terminate EC2 instances:
 
 ```yaml
-# cleanup.yml
 - name: Terminate EC2 Instances
   hosts: localhost
   gather_facts: no
@@ -134,15 +158,21 @@ Ensure AWS security group allows port 80 (HTTP) and 22 (SSH)
         aws_secret_key: YOUR_SECRET
 ```
 
+Run with:
+
+```bash
+ansible-playbook cleanup.yml
+```
+
 ---
 
 ## 🖼️ Architecture Diagram
 
-![Architecture Diagram](diagrams/architecture.png)
+![LAMP Architecture](diagrams/architecture.png)
 
 ---
 
-## 📤 Pushing to GitHub
+## 📤 Push to GitHub
 
 ```bash
 git init
@@ -155,26 +185,26 @@ git push -u origin main
 
 ---
 
-## 📚 Technologies Used
+## 💻 Technologies Used
 
-* Ansible
-* AWS EC2
-* Apache
-* MySQL
-* Ubuntu / Amazon Linux
-* GitHub
-
----
-
-## 📎 License
-
-MIT License - feel free to use and modify.
+* ✅ Ansible
+* ✅ AWS EC2
+* ✅ Apache HTTP Server
+* ✅ MySQL Server
+* ✅ Ubuntu 22.04 / Amazon Linux 2
+* ✅ Git & GitHub
 
 ---
 
-## 🙌 Author
+## 📄 License
 
-Bolaji (cloudjingo)
+MIT License — free to use and modify
+
+---
+
+## 👤 Author
+
+**Bolaji** ([@cloudjingo](https://github.com/cloudjingo))
 
 ---
 
