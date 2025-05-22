@@ -25,7 +25,7 @@ ansible-aws-project/
 ├── cleanup.yml
 ├── README.md
 └── diagrams/
-    └── architecture.png
+    └── diagram.png
 ```
 
 ---
@@ -115,19 +115,6 @@ sudo systemctl status mysql
 
 ---
 
-## 🔐 Additional Security Tasks
-
-### 🔥 Enable UFW on DB Server:
-
-Add to your DB playbook:
-
-```yaml
-- name: Enable UFW
-  ufw:
-    state: enabled
-    policy: allow
-```
-
 ### 🔓 Open AWS Security Group Ports:
 
 Ensure the following ports are open:
@@ -166,9 +153,11 @@ ansible-playbook cleanup.yml
 
 ---
 
-## 🖼️ Architecture Diagram
+## 🖼️  Diagram
 
-![LAMP Architecture](diagrams/architecture.png)
+
+![Screenshot 2025-05-22 000342](https://github.com/user-attachments/assets/a6a77ec1-84b0-435b-b4b3-7b2c07484b25)
+![webserver](https://github.com/user-attachments/assets/1a26f26b-6c06-48d0-9f95-54e1ab76eaa6)
 
 ---
 
